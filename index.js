@@ -19,13 +19,6 @@ app.use(cors());
 app.use(express.json());
 
 
-app.use(express.static(path.join(__dirname, "public"))); 
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html")); // React
-  
-});
-
 const tokenValidation = (req, res, next) => {
 
     const authorization = req.headers['authorization']
@@ -43,8 +36,6 @@ const tokenValidation = (req, res, next) => {
         return res.status(400).json({ message: "Invalid Token" })
     }
 
-
-
 }
 
 
@@ -57,6 +48,13 @@ app.use('/api/auth', authUser);
 app.post('/api/validateSesion', tokenValidation, (req, res) => {
     res.json({ message: "Valid Token" })
 })
+
+app.use(express.static(path.join(__dirname, "public"))); 
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html")); 
+  
+});
 
 const port = process.env.PORT || 8080
 
